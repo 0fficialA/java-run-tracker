@@ -11,11 +11,11 @@ public class Main implements ActionListener{
 	JFrame frame;
 	UserRepository userData;
 	User user;
-	
+
 	JLabel label;
 	JTextField inputField;
 	JButton button;
-	
+
 	public Main() {
 		userData = new UserRepository();
 		user = new User("Anthony", userData.getMiles());
@@ -24,12 +24,12 @@ public class Main implements ActionListener{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(300, 200);
 		frame.setLayout(new FlowLayout());
-		
+
 		// 2. Create the three simple components
 		label = new JLabel("Current Miles: " + user.getMiles());
 		inputField = new JTextField(10);
 		button = new JButton("Add Miles");
-		
+
 		button.addActionListener(this);
 
 		// 3. Add them to the window
@@ -39,30 +39,42 @@ public class Main implements ActionListener{
 		// 4. Make it visible
 		frame.setVisible(true);
 	}
-	
+
 	public static void main(String[] args) {
 		Main tracker = new Main();
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		String text = inputField.getText().trim();
+	    
+	    // Catch blank entries before parsing
+	    if (text.isEmpty()) {
+	        System.err.println("Error: Input box cannot be left blank.");
+	        return;
+	    }
 		try {
 			// Pull the text straight from the inputField variable directly
-			double inputMiles = Double.parseDouble(inputField.getText().trim());
+			double inputMiles = Double.parseDouble(text);
+			if (inputMiles >= 0) {
+				// Update your data models
+				user.addMiles(inputMiles);
+				userData.updateMiles(user.getMiles());
 
-			// Update your data models
-			user.addMiles(inputMiles);
-			userData.updateMiles(user.getMiles());
+				// Update the visual text on the screen instantly
+				label.setText("Current Miles: " + user.getMiles());
 
-			// Update the visual text on the screen instantly
-			label.setText("Current Miles: " + user.getMiles());
-
-			// Clear the text box for the next entry
-			inputField.setText("");
-			System.out.println("Successfully added and saved miles!");
+				// Clear the text box for the next entry
+				inputField.setText("");
+				System.out.println("Successfully added and saved miles!");
+			}
+			else {
+				System.err.println("Cannot have negative miles");
+			}
 
 		} catch (NumberFormatException ex) {
 			// Prevent your app from crashing if you type letters instead of numbers
 			System.out.println("Error: Please enter a valid decimal number.");
+			inputField.setText("");
 		}
 	}
 }
