@@ -23,9 +23,9 @@ public class UserRepository {
 	}
 
 	public void updateMiles(double miles) {
-		try (FileWriter writer = new FileWriter(userData)) {
+		try (FileWriter writer = new FileWriter(userData, true)) {
 			reader = new Scanner(userData);
-			writer.write(String.valueOf(miles));
+			writer.write(String.valueOf(miles) + "\n");
 			writer.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -35,16 +35,36 @@ public class UserRepository {
 	}
 
 	public double getMiles() {
+		double miles = 0;
 		try {
 			reader = new Scanner(userData);
-			double miles = Double.parseDouble(reader.nextLine().trim());
+
+			while (reader.hasNextLine()) {
+				String line = reader.nextLine().trim();
+				if (!line.isEmpty()) {
+					miles = Double.parseDouble(line);
+				}
+			}
+			miles = Double.parseDouble(reader.next().trim());
 			reader.close();
 			return miles;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
-			return 0;
+			e.printStackTrace();
 		}
-		return 0;
+		return miles;
+	}
+
+	public void printHistory() {
+		try (Scanner historyReader = new Scanner(userData)) {
+			System.out.println("--- Your Running History Log ---");
+			while (historyReader.hasNextLine()) {
+				System.out.println(historyReader.nextLine());
+			}
+			System.out.println("--------------------------------");
+		} catch (FileNotFoundException e) {
+			System.err.println("No history file found yet.");
+		}
 	}
 }

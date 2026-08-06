@@ -46,6 +46,7 @@ public class Main implements ActionListener{
 
 	public static void main(String[] args) {
 		Main tracker = new Main();
+		tracker.userData.printHistory();
 	}
 
 	public void actionPerformed(ActionEvent e) {
