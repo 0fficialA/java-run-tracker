@@ -1,13 +1,13 @@
-import java.io.File;  // Import the File class
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException; // Import IOException to handle errors
-import java.util.Scanner;             // Import the Scanner class to read text files
-import java.io.FileWriter;   // Import the FileWriter class
+import java.io.IOException;
+import java.util.Scanner;
+import java.io.FileWriter;
 
 public class UserRepository {
 	private File userData;
 	private Scanner reader;
-	//initiates Repository
+	
 	public UserRepository() {
 		try {
 			userData = new File("user.txt");
@@ -23,10 +23,11 @@ public class UserRepository {
 	}
 
 	public void updateMiles(double miles) {
-		try (FileWriter writer = new FileWriter(userData, true)) {
+		try (FileWriter mileHistory = new FileWriter(userData, true)) {
 			reader = new Scanner(userData);
-			writer.write(String.valueOf(miles) + "\n");
-			writer.close();
+			mileHistory.write(String.valueOf(miles) + "\n");
+			reader.close();
+			mileHistory.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -45,7 +46,6 @@ public class UserRepository {
 					miles = Double.parseDouble(line);
 				}
 			}
-			miles = Double.parseDouble(reader.next().trim());
 			reader.close();
 			return miles;
 		} catch (FileNotFoundException e) {
