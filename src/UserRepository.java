@@ -67,4 +67,19 @@ public class UserRepository {
 			System.err.println("No history file found yet.");
 		}
 	}
+	
+	public void printHistory(double minMile) {
+		try (Scanner historyReader = new Scanner(userData)) {
+			System.out.println("--- Your Running History Log ---");
+			while (historyReader.hasNextLine()) {
+				double text = Double.parseDouble(historyReader.nextLine());
+				
+				if (text >= minMile) { System.out.println(text); }
+			}
+			System.out.println("--------------------------------");
+		} catch (FileNotFoundException e) {
+			System.err.println("No history file found yet.");
+		}
+	}
+	
 }
