@@ -10,7 +10,7 @@ public class UserRepository {
 	
 	public UserRepository() {
 		try {
-			userData = new File("user.txt");
+			userData = new File(AppConstraints.UserData);
 			if (userData.createNewFile()) {
 				System.out.println("New file: " + userData.getName());
 			} else {
