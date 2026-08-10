@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.FileWriter;
 
@@ -77,6 +78,35 @@ public class UserRepository {
 				if (text >= minMile) { System.out.println(text); }
 			}
 			System.out.println("--------------------------------");
+		} catch (FileNotFoundException e) {
+			System.err.println("No history file found yet.");
+		}
+	}
+	
+	public void printDashboardSumamry() {
+		try (Scanner historyReader = new Scanner(userData)) {
+			System.out.println("--- Dashboard Summary ---");
+			
+			ArrayList<Double> nums = new ArrayList<Double>();
+			double firstNum = 0;
+			double lastNum = 0;
+			while (historyReader.hasNextLine()) {
+				double text = Double.parseDouble(historyReader.nextLine());
+				nums.add(text);
+				lastNum = text;
+				if (text == 0) { 
+					firstNum = Double.parseDouble(historyReader.nextLine()); 
+					nums = new ArrayList<Double>();
+					nums.add(firstNum);
+					}
+			}
+			Double total = 0.0;
+			for (Double num : nums) {
+				total += num;
+				}
+			System.out.println("Total Progress made: " + (lastNum - firstNum) +  "\n"
+					+ "Average Added: "+ total/nums.size() + "\n"
+					+ "--------------------------------");
 		} catch (FileNotFoundException e) {
 			System.err.println("No history file found yet.");
 		}
