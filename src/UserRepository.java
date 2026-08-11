@@ -84,32 +84,41 @@ public class UserRepository {
 	}
 	
 	public void printDashboardSumamry() {
-		try (Scanner historyReader = new Scanner(userData)) {
-			System.out.println("--- Dashboard Summary ---");
-			
-			ArrayList<Double> nums = new ArrayList<Double>();
-			double firstNum = 0;
-			double lastNum = 0;
-			while (historyReader.hasNextLine()) {
-				double text = Double.parseDouble(historyReader.nextLine());
-				nums.add(text);
-				lastNum = text;
-				if (text == 0) { 
-					firstNum = Double.parseDouble(historyReader.nextLine()); 
-					nums = new ArrayList<Double>();
-					nums.add(firstNum);
-					}
-			}
-			Double total = 0.0;
-			for (Double num : nums) {
-				total += num;
-				}
-			System.out.println("Total Progress made: " + (lastNum - firstNum) +  "\n"
-					+ "Average Added: "+ total/nums.size() + "\n"
-					+ "--------------------------------");
-		} catch (FileNotFoundException e) {
-			System.err.println("No history file found yet.");
-		}
+	    try (Scanner historyReader = new Scanner(userData)) {
+	        System.out.println("--- Dashboard Summary ---");
+	        
+	        ArrayList<Double> nums = new ArrayList<>();
+	        while (historyReader.hasNextLine()) {
+	            String line = historyReader.nextLine().trim();
+	            if (!line.isEmpty()) {
+	                try {
+	                    double text = Double.parseDouble(line);
+	                    nums.add(text);
+	                } catch (NumberFormatException e) {
+	                    // Skip malformed lines safely instead of crashing
+	                }
+	            }
+	        }
+	        
+	        if (nums.isEmpty()) {
+	            System.out.println("No data recorded yet.");
+	            System.out.println("--------------------------------");
+	            return;
+	        }
+
+	        double total = 0.0;
+	        for (Double num : nums) {
+	            total += num;
+	        }
+	        
+	        System.out.println("Total Entries: " + nums.size());
+	        System.out.println("Total Miles Logged: " + total);
+	        System.out.println("Average Entry: " + (total / nums.size()));
+	        System.out.println("--------------------------------");
+	        
+	    } catch (FileNotFoundException e) {
+	        System.err.println("No history file found yet.");
+	    }
 	}
 	
 }
