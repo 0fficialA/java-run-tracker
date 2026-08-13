@@ -3,6 +3,14 @@
   <groupId>runtracker</groupId>
   <artifactId>java-run-tracker</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <dependencies>
+    <!-- SQLite JDBC Driver -->
+    <dependency>
+        <groupId>org.xerial</groupId>
+        <artifactId>sqlite-jdbc</artifactId>
+        <version>3.53.2.1</version>
+    </dependency>
+</dependencies>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
@@ -14,5 +22,6 @@
         </configuration>
       </plugin>
     </plugins>
+    
   </build>
 </project>
