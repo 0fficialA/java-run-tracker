@@ -1,3 +1,5 @@
+package main;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -30,7 +32,7 @@ public class UserSQL {
 		}
 	}
 
-	public void InsertUser(User user) {
+	public void insertUser(User user) {
 	    // If you want to use the 'num' parameter instead of the user object's value:
 	    String insertSQL = "INSERT INTO users (name, miles) VALUES (?, ?);";
 	    
@@ -81,6 +83,6 @@ public class UserSQL {
 		UserSQL repo = new UserSQL();
 		User me = new User("Anthonkiy");
 		
-		repo.InsertUser(me);
+		repo.insertUser(me);
 	}
 }
