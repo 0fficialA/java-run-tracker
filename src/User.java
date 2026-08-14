@@ -3,6 +3,11 @@ public class User {
 	private String name;
 	private double miles;
 	
+	public User(String name) {
+		this.name = name;
+		this.miles = 0;
+	}
+	
 	public User(String name, double miles) {
 		this.name = name;
 		this.miles = miles;
