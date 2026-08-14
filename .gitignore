@@ -25,4 +25,6 @@ replay_pid*
 
 #user database
 user.txt
-user.txt
+
+
+target/
