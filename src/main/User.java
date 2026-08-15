@@ -1,9 +1,18 @@
 package main;
 
 public class User {
+	private long id;
 	private String name;
 	private double miles;
 	
+	//Existing user
+	public User(Long id, String name, double miles) {
+		this.id = id;
+		this.name = name;
+		this.miles = miles;
+	}
+	
+	//New user
 	public User(String name) {
 		this.name = name;
 		this.miles = 0;
@@ -22,19 +31,11 @@ public class User {
 		this.miles += miles;
 	}
 	
-	public String getName() {
-		return name;
-	}
+	public String getName() { return name; }
 	
-	public double getMiles() {
-		return miles;
-	}
+	public double getMiles() { return miles; }
 	
-	public void setName(String name) {
-		this.name = name;
-	}
+	public void setName(String name) { this.name = name; }
 	
-	public void setMiles(double miles) {
-		this.miles = miles;
-	}
+	public void setMiles(double miles) { this.miles = miles; }
 }
