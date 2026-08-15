@@ -47,7 +47,30 @@ public class UserSQL {
 	            pstmt.setDouble(2, user.getMiles()); // Using the method parameter 'num'
 
 	            pstmt.executeUpdate();
-	            System.out.println("Miles updated/inserted successfully." + user.getMiles());
+	            System.out.println("Miles inserted successfully." + user.getMiles());
+	        }
+	        
+	    } catch (SQLException e) {
+	        System.out.println("Database error: " + e.getMessage());
+	    }
+	}
+	
+	public void updateUser(User user, Double num) {
+	    // If you want to use the 'num' parameter instead of the user object's value:
+	    String insertSQL = "UPDATE users SET miles= ? WHERE name = ?;";
+	    
+	    try (Connection conn = DriverManager.getConnection(url);
+	         PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
+	        
+	        if (conn != null) {
+	            System.out.println("Connected to SQLite database successfully!");
+
+	            // Set the variables using the PreparedStatement directly
+	            pstmt.setDouble(1, num); 
+	            pstmt.setString(2, user.getName()); // Using the method parameter 'num'
+
+	            pstmt.executeUpdate();
+	            System.out.println("Miles updated successfully." + user.getMiles());
 	        }
 	        
 	    } catch (SQLException e) {
