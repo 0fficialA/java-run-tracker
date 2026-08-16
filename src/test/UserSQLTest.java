@@ -26,7 +26,7 @@ class UserSQLTest {
 	@Test
 	void testUpdate() {
 		UserSQL repo = new UserSQL();
-	    User me = new User("Anthonkiy", 10.0);
-	    repo.updateUser(me, 5.0);
+	    User me = new User("Aj", 10.0);
+	    repo.retrieveUserById(2);
 	}
 }

@@ -32,7 +32,7 @@ public class UserSQL {
 		}
 	}
 
-	public void insertUser(User user) {
+	public void createUser(User user) {
 	    // If you want to use the 'num' parameter instead of the user object's value:
 	    String insertSQL = "INSERT INTO users (name, miles) VALUES (?, ?);";
 	    
@@ -48,6 +48,59 @@ public class UserSQL {
 
 	            pstmt.executeUpdate();
 	            System.out.println("Miles inserted successfully." + user.getMiles());
+	        }
+	        
+	    } catch (SQLException e) {
+	        System.out.println("Database error: " + e.getMessage());
+	    }
+	}
+	
+	public void retrieveUsers() {
+		try (Connection conn = DriverManager.getConnection(url)) {
+			if (conn != null) {
+				System.out.println("Connected to SQLite database successfully!");
+
+				// Create a statement
+				try (Statement stmt = conn.createStatement()) {
+					// 3. Query data
+					String selectSQL = "SELECT id, name FROM users;";
+					try (ResultSet rs = stmt.executeQuery(selectSQL)) {
+						System.out.println("\n--- Users List ---");
+						while (rs.next()) {
+							int id = rs.getInt("id");
+							String name = rs.getString("name");
+							System.out.println("ID: " + id + ", Name: " + name);
+						}
+					}
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("Database error: " + e.getMessage());
+		}
+	}
+	
+	public void retrieveUserById(int userId) {
+	    // If you want to use the 'num' parameter instead of the user object's value:
+	    String selectSQL = "SELECT id, name, miles FROM users WHERE id = ?;";
+	    
+	    try (Connection conn = DriverManager.getConnection(url);
+	         PreparedStatement pstmt = conn.prepareStatement(selectSQL)) {
+	        
+	        if (conn != null) {
+	            System.out.println("Connected to SQLite database successfully!");
+
+	            // Set the variables using the PreparedStatement directly
+	            pstmt.setInt(1, userId); 
+
+	            try (ResultSet rs = pstmt.executeQuery()) {
+					System.out.println("\n--- User Details ---");
+					while (rs.next()) {
+						int id = rs.getInt("id");
+						String name = rs.getString("name");
+						double miles = rs.getDouble("miles");
+						System.out.println("ID: " + id + ", Name: " + name + ", Miles: " + miles);
+					}
+				}
 	        }
 	        
 	    } catch (SQLException e) {
@@ -78,34 +131,22 @@ public class UserSQL {
 	    }
 	}
 	
-//	public void retrieveMiles() {
-//		try (Connection conn = DriverManager.getConnection(url)) {
-//			if (conn != null) {
-//				System.out.println("Connected to SQLite database successfully!");
-//
-//				// Create a statement
-//				try (Statement stmt = conn.createStatement()) {
-//					// 3. Query data
-//					String selectSQL = "SELECT id, name FROM users;";
-//					try (ResultSet rs = stmt.executeQuery(selectSQL)) {
-//						System.out.println("\n--- Users List ---");
-//						while (rs.next()) {
-//							int id = rs.getInt("id");
-//							String name = rs.getString("name");
-//							System.out.println("ID: " + id + ", Name: " + name);
-//						}
-//					}
-//				}
-//			}
-//		} catch (SQLException e) {
-//			System.out.println("Database error: " + e.getMessage());
-//		}
-//	}
+	public void deleteUser(int userId) {
+	    String insertSQL = "DELETE FROM users WHERE id = ?;";
+	    
+	    try (Connection conn = DriverManager.getConnection(url);
+	         PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
+	        
+	        if (conn != null) {
+	            System.out.println("Connected to SQLite database successfully!");
 
-	public static void main(String[] args) {
-		UserSQL repo = new UserSQL();
-		User me = new User("Anthonkiy");
-		
-		repo.insertUser(me);
+	            // Set the variables using the PreparedStatement directly
+	            pstmt.setInt(1, userId);
+	            pstmt.executeUpdate();
+	        }
+	        
+	    } catch (SQLException e) {
+	        System.out.println("Database error: " + e.getMessage());
+	    }
 	}
 }
