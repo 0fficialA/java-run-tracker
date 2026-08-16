@@ -1,7 +1,7 @@
 package main;
 
 public class User {
-	private long id;
+	private int id;
 	private String name;
 	private double miles;
 	
@@ -31,9 +31,13 @@ public class User {
 		this.miles += miles;
 	}
 	
-	public String getName() { return name; }
+	public int getId() { return this.id; }
 	
-	public double getMiles() { return miles; }
+	public String getName() { return this.name; }
+	
+	public double getMiles() { return this.miles; }
+	
+	public void setId(int id) { this.id = id; }
 	
 	public void setName(String name) { this.name = name; }
 	
