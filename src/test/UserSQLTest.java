@@ -2,6 +2,8 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.HashMap;
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -24,11 +26,22 @@ class UserSQLTest {
 	    assertEquals("Anthonkiy", me.getName(), "Names should match");
 	}
 
+	@Disabled
 	@Test
 	void testUpdate() {
 		UserSQL repo = new UserSQL();
 	    User me = new User("Aj", 15.0);
 	    repo.createUser(me);
 	    repo.retrieveUserById(2);
+	}
+	
+	@Test
+	void testLoadUser() {
+		UserSQL repo = new UserSQL();
+	    
+	    HashMap<String, Object> userInfo = repo.retrieveUserById(1);
+	    User user = new User( (int) userInfo.get("id"), (String) userInfo.get("name"), (double) userInfo.get("miles"));
+	    
+	    System.out.println(user);
 	}
 }

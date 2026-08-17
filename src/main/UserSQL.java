@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class UserSQL {
 	String url = "jdbc:sqlite:C:\\Users\\aopar\\eclipse-workspace\\my_database.db";
@@ -79,9 +81,10 @@ public class UserSQL {
 		}
 	}
 	
-	public void retrieveUserById(int userId) {
+	public HashMap<String, Object> retrieveUserById(int userId) {
 	    // If you want to use the 'num' parameter instead of the user object's value:
 	    String selectSQL = "SELECT id, name, miles FROM users WHERE id = ?;";
+	    HashMap<String, Object> userInfo = new HashMap<String, Object>();
 	    
 	    try (Connection conn = DriverManager.getConnection(url);
 	         PreparedStatement pstmt = conn.prepareStatement(selectSQL)) {
@@ -98,6 +101,11 @@ public class UserSQL {
 						int id = rs.getInt("id");
 						String name = rs.getString("name");
 						double miles = rs.getDouble("miles");
+						
+						userInfo.put("id", id);
+						userInfo.put("name", name);
+						userInfo.put("miles", miles);
+						
 						System.out.println("ID: " + id + ", Name: " + name + ", Miles: " + miles);
 					}
 				}
@@ -106,6 +114,7 @@ public class UserSQL {
 	    } catch (SQLException e) {
 	        System.out.println("Database error: " + e.getMessage());
 	    }
+		return userInfo;
 	}
 	
 	public void updateUser(User user, Double num) {
