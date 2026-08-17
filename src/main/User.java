@@ -6,7 +6,7 @@ public class User {
 	private double miles;
 	
 	//Existing user
-	public User(Long id, String name, double miles) {
+	public User(int id, String name, double miles) {
 		this.id = id;
 		this.name = name;
 		this.miles = miles;
@@ -42,4 +42,9 @@ public class User {
 	public void setName(String name) { this.name = name; }
 	
 	public void setMiles(double miles) { this.miles = miles; }
+	
+	@Override
+	public String toString() {
+	    return "User{id=" + id + ", name='" + name + "', miles=" + miles + "}";
+	}
 }
