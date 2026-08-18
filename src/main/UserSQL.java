@@ -117,7 +117,7 @@ public class UserSQL {
 		return userInfo;
 	}
 	
-	public void updateUser(User user, Double num) {
+	public void SaveUser(User user) {
 	    // If you want to use the 'num' parameter instead of the user object's value:
 	    String insertSQL = "UPDATE users SET miles= ? WHERE name = ?;";
 	    
@@ -128,7 +128,7 @@ public class UserSQL {
 	            System.out.println("Connected to SQLite database successfully!");
 
 	            // Set the variables using the PreparedStatement directly
-	            pstmt.setDouble(1, num); 
+	            pstmt.setDouble(1, user.getMiles()); 
 	            pstmt.setString(2, user.getName()); // Using the method parameter 'num'
 
 	            pstmt.executeUpdate();
@@ -140,7 +140,7 @@ public class UserSQL {
 	    }
 	}
 	
-	public void deleteUser(int userId) {
+	public void deleteUserByID(int userId) {
 	    String insertSQL = "DELETE FROM users WHERE id = ?;";
 	    
 	    try (Connection conn = DriverManager.getConnection(url);
@@ -151,6 +151,25 @@ public class UserSQL {
 
 	            // Set the variables using the PreparedStatement directly
 	            pstmt.setInt(1, userId);
+	            pstmt.executeUpdate();
+	        }
+	        
+	    } catch (SQLException e) {
+	        System.out.println("Database error: " + e.getMessage());
+	    }
+	}
+	
+	public void deleteUser(User user) {
+	    String insertSQL = "DELETE FROM users WHERE id = ?;";
+	    
+	    try (Connection conn = DriverManager.getConnection(url);
+	         PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
+	        
+	        if (conn != null) {
+	            System.out.println("Connected to SQLite database successfully!");
+
+	            // Set the variables using the PreparedStatement directly
+	            pstmt.setInt(1, user.getId());
 	            pstmt.executeUpdate();
 	        }
 	        
