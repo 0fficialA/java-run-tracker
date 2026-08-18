@@ -8,6 +8,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import model.*;
+import dao.*;
 
 public class Main implements ActionListener{
 	JFrame frame;
@@ -88,7 +90,7 @@ public class Main implements ActionListener{
 				}
 
 			} catch (NumberFormatException ex) {
-				// Prevent your app from crashing if you type letters instead of numbers
+				// Prevent your application from crashing if you type letters instead of numbers
 				System.out.println("Error: Please enter a valid decimal number.");
 				inputField.setText("");
 			}

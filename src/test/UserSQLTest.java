@@ -7,8 +7,8 @@ import java.util.HashMap;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import main.User;
-import main.UserSQL;
+import dao.*;
+import model.*;
 
 class UserSQLTest {
 	@Disabled

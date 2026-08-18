@@ -1,4 +1,4 @@
-package main;
+package dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import model.*;
 
 public class UserSQL {
 	String url = "jdbc:sqlite:C:\\Users\\aopar\\eclipse-workspace\\my_database.db";
@@ -117,7 +118,7 @@ public class UserSQL {
 		return userInfo;
 	}
 	
-	public void SaveUser(User user) {
+	public void saveUser(User user) {
 	    // If you want to use the 'num' parameter instead of the user object's value:
 	    String insertSQL = "UPDATE users SET miles= ? WHERE name = ?;";
 	    
