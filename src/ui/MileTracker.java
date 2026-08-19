@@ -3,6 +3,7 @@ package ui;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,7 +15,7 @@ import main.*;
 import model.*;
 
 public class MileTracker extends JFrame implements ActionListener{
-	UserRepository userData;
+	UserSQL userData;
 	User user;
 	JButton resetButton;
 
@@ -22,7 +23,7 @@ public class MileTracker extends JFrame implements ActionListener{
 	JTextField inputField;
 	JButton button;
 
-	public MileTracker(User user, UserRepository userData) {
+	public MileTracker(User user, UserSQL userData) {
 		super("Ugly Run Tracker");
 		
 		this.user = user;
@@ -52,20 +53,20 @@ public class MileTracker extends JFrame implements ActionListener{
 	}
 
 	public static void main(String[] args) {
+		UserSQL repo = new UserSQL();
+	    
+	    HashMap<String, Object> userInfo = repo.retrieveUserById(1);
+	    User user = new User( (int) userInfo.get("id"), (String) userInfo.get("name"), (double) userInfo.get("miles"));
 		
-		UserRepository userData = new UserRepository();
-		User user = new User("Anthony", userData.getMiles());
+		MileTracker tracker = new MileTracker(user, repo);
 		
-		MileTracker tracker = new MileTracker(user, userData);
-		
-		tracker.userData.printHistory(0.1);
-		tracker.userData.printDashboardSumamry();
+		System.out.println("User Data: " + repo.retrieveUserById(user.getId()).toString());
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == resetButton) {
 			user.resetMiles();
-			userData.updateMiles(user.getMiles());
+			userData.saveUser(user);
 			label.setText("Current Miles: " + user.getMiles());
 			System.out.println("Successfully Reset Miles!");
 		}
@@ -84,7 +85,7 @@ public class MileTracker extends JFrame implements ActionListener{
 				if (inputMiles >= 0) {
 					// Update your data models
 					user.addMiles(inputMiles);
-					userData.updateMiles(user.getMiles());
+					userData.saveUser(user);
 
 					// Update the visual text on the screen instantly
 					label.setText("Current Miles: " + user.getMiles());
