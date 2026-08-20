@@ -26,7 +26,14 @@ public class UserSQL {
 							"id INTEGER PRIMARY KEY AUTOINCREMENT, " +
 							"name TEXT NOT NULL, miles DOUBLE NULL);";
 					stmt.execute(createTableSQL);
+					createTableSQL = "CREATE TABLE user_credentials ("
+							+ "    credential_id INT AUTO_INCREMENT PRIMARY KEY,"
+							+ "    user_id INT NOT NULL,"
+							+ "    username VARCHAR(50) UNIQUE NOT NULL,"
+							+ "    password_hash VARCHAR(255) NOT NULL,"
+							+ "    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE);";
 					System.out.println("Table 'users' ready.");
+					stmt.execute(createTableSQL);
 				}
 			}
 		} catch (SQLException e) {
