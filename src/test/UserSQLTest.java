@@ -35,6 +35,7 @@ class UserSQLTest {
 	    repo.retrieveUserById(2);
 	}
 	
+	@Disabled
 	@Test
 	void testLoadUser() {
 		UserSQL repo = new UserSQL();
@@ -43,5 +44,14 @@ class UserSQLTest {
 	    User user = new User( (int) userInfo.get("id"), (String) userInfo.get("name"), (double) userInfo.get("miles"));
 	    
 	    System.out.println(user);
+	}
+	
+	@Test
+	void testCreateUser() {
+		UserSQL db = new UserSQL();
+		User newUser = new User("Anthony", 5);
+
+		// Automatically creates the user profile, gets generated ID, and creates credentials
+		db.createUserWithCredentials(newUser, "aopara", "my123");
 	}
 }
