@@ -12,7 +12,7 @@ class LoginTest {
 	void test() {
 		Login login = new Login();
 		try {
-			Thread.sleep(10000);
+			Thread.sleep(110000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

@@ -169,6 +169,33 @@ public class UserSQL {
 		return userInfo;
 	}
 	
+	public String retrievePasswordByUsername(String username) {
+		String selectSQL = "SELECT username, password_hash FROM user_credentials WHERE username = ?;";
+		
+		try (Connection conn = DriverManager.getConnection(url);
+			 PreparedStatement pstmt = conn.prepareStatement(selectSQL)) {
+			
+			if (conn != null) {
+				pstmt.setString(1, username); 
+
+				try (ResultSet rs = pstmt.executeQuery()) {
+					while (rs.next()) {
+						String password = rs.getString("password_hash");
+						
+						return password;
+					}
+				}
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("Database error: " + e.getMessage());
+		}
+		catch (Exception e) {
+			return null;
+		}
+		return null;
+	}
+	
 	public void saveUser(User user) {
 		String insertSQL = "UPDATE users SET miles= ? WHERE name = ?;";
 		
