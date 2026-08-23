@@ -169,8 +169,10 @@ public class UserSQL {
 		return userInfo;
 	}
 	
-	public String retrievePasswordByUsername(String username) {
-		String selectSQL = "SELECT username, password_hash FROM user_credentials WHERE username = ?;";
+	public HashMap<String, Object> retrieveCredentialsByUsername(String username) {
+		HashMap<String,Object> credentials = new HashMap<String,Object>();
+		
+		String selectSQL = "SELECT user_id, username, password_hash FROM user_credentials WHERE username = ?;";
 		
 		try (Connection conn = DriverManager.getConnection(url);
 			 PreparedStatement pstmt = conn.prepareStatement(selectSQL)) {
@@ -179,10 +181,13 @@ public class UserSQL {
 				pstmt.setString(1, username); 
 
 				try (ResultSet rs = pstmt.executeQuery()) {
-					while (rs.next()) {
-						String password = rs.getString("password_hash");
+					if (rs.next()) {
+						credentials.put("id", rs.getInt("user_id"));
+						credentials.put("username", rs.getString("username"));
+						credentials.put("password", rs.getString("password_hash"));
 						
-						return password;
+						
+						return credentials;
 					}
 				}
 			}

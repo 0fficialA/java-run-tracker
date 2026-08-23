@@ -3,6 +3,7 @@ package ui;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -54,18 +55,15 @@ public class Login extends JFrame implements ActionListener{
 	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == submitButton) {
-			System.out.println("You put: " + passField.getText() + " but it is: " + userData.retrievePasswordByUsername(userField.getText()));
-			
-			String inputUser = userField.getText();
-	        String inputPass = passField.getText();
+			System.out.println("You put: " + passField.getText() + " but it is: " + userData.retrieveCredentialsByUsername(userField.getText()));
 
 	        // Single DB call
-	        String dbPassword = userData.retrievePasswordByUsername(inputUser);
+	        HashMap<String,Object> credentials = userData.retrieveCredentialsByUsername(userField.getText());
 
-	        if (dbPassword == null) {
+	        if (credentials == null) {
 	            System.out.println("Does not exist");
-	        } else if (dbPassword.equals(inputPass)) {
-	            System.out.println("Success");
+	        } else if (credentials.get("password").equals(passField.getText())) {
+	            System.out.println("Success, welcome " + credentials.get("username") + "your id is: " + credentials.get("id"));
 	        } else {
 	            System.out.println("Fail");
 	        }
