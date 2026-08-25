@@ -23,12 +23,12 @@ public class MileTracker extends JFrame implements ActionListener{
 	JTextField inputField;
 	JButton button;
 
-	public MileTracker(User user, UserSQL userData) {
+	public MileTracker(User user) {
 		super("Ugly Run Tracker");
+		System.out.println(user);
 		
 		this.user = user;
-		this.userData = userData;
-		
+		this.userData = new UserSQL();
 		// 1. Create the window container
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(300, 200);
@@ -58,7 +58,7 @@ public class MileTracker extends JFrame implements ActionListener{
 	    HashMap<String, Object> userInfo = repo.retrieveUserById(1);
 	    User user = new User( (int) userInfo.get("id"), (String) userInfo.get("name"), (double) userInfo.get("miles"));
 		
-		MileTracker tracker = new MileTracker(user, repo);
+		MileTracker tracker = new MileTracker(user);
 		
 		System.out.println("User Data: " + repo.retrieveUserById(user.getId()).toString());
 	}

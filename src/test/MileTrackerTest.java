@@ -18,7 +18,7 @@ public class MileTrackerTest {
     HashMap<String, Object> userInfo = repo.retrieveUserById(1);
     User user = new User( (int) userInfo.get("id"), (String) userInfo.get("name"), (double) userInfo.get("miles"));
 	
-	MileTracker tracker = new MileTracker(user, repo);
+	MileTracker tracker = new MileTracker(user);
 	}
 	
 	

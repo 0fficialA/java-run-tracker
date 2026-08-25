@@ -172,8 +172,12 @@ public class UserSQL {
 	public HashMap<String, Object> retrieveCredentialsByUsername(String username) {
 		HashMap<String,Object> credentials = new HashMap<String,Object>();
 		
-		String selectSQL = "SELECT user_id, username, password_hash FROM user_credentials WHERE username = ?;";
-		
+		// Explicitly join users.id with user_credentials.user_id using JOIN syntax
+	    String selectSQL = "SELECT uc.user_id, uc.username, uc.password_hash, u.name, u.miles " +
+	                       "FROM user_credentials uc " +
+	                       "JOIN users u ON uc.user_id = u.id " +
+	                       "WHERE uc.username = ?;";
+	    
 		try (Connection conn = DriverManager.getConnection(url);
 			 PreparedStatement pstmt = conn.prepareStatement(selectSQL)) {
 			
@@ -183,10 +187,10 @@ public class UserSQL {
 				try (ResultSet rs = pstmt.executeQuery()) {
 					if (rs.next()) {
 						credentials.put("id", rs.getInt("user_id"));
+						credentials.put("name", rs.getString("name"));
 						credentials.put("username", rs.getString("username"));
 						credentials.put("password", rs.getString("password_hash"));
-						
-						
+						credentials.put("miles", rs.getDouble("miles"));
 						return credentials;
 					}
 				}
@@ -202,6 +206,8 @@ public class UserSQL {
 	}
 	
 	public void saveUser(User user) {
+		
+		System.out.println(user);
 		String insertSQL = "UPDATE users SET miles= ? WHERE name = ?;";
 		
 		try (Connection conn = DriverManager.getConnection(url);

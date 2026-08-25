@@ -59,11 +59,13 @@ public class Login extends JFrame implements ActionListener{
 
 	        // Single DB call
 	        HashMap<String,Object> credentials = userData.retrieveCredentialsByUsername(userField.getText());
-
+	        
 	        if (credentials == null) {
 	            System.out.println("Does not exist");
 	        } else if (credentials.get("password").equals(passField.getText())) {
 	            System.out.println("Success, welcome " + credentials.get("username") + "your id is: " + credentials.get("id"));
+	            User user =  new User((int) credentials.get("id"), (String) credentials.get("name"), (double) credentials.get("miles"));
+	            new MileTracker(user);
 	        } else {
 	            System.out.println("Fail");
 	        }

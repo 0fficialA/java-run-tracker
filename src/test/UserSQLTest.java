@@ -2,8 +2,13 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +16,7 @@ import dao.*;
 import model.*;
 
 class UserSQLTest {
+	
 	@Disabled
 	@Test
 	void test() {
@@ -49,9 +55,9 @@ class UserSQLTest {
 	@Test
 	void testCreateUser() {
 		UserSQL db = new UserSQL();
-		User newUser = new User("Anthony", 5);
+		User newUser = new User("Anthony", 306);
 
 		// Automatically creates the user profile, gets generated ID, and creates credentials
-		db.createUserWithCredentials(newUser, "aopara", "my123");
+		db.createUserWithCredentials(newUser, "aopara", "34");
 	}
 }
