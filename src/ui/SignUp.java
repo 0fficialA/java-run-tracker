@@ -13,7 +13,7 @@ import javax.swing.JTextField;
 import dao.UserSQL;
 import model.User;
 
-public class Login extends JFrame implements ActionListener{
+public class SignUp extends JFrame implements ActionListener{
 	UserSQL userData;
 	User user;
 	JButton resetButton;
@@ -23,9 +23,11 @@ public class Login extends JFrame implements ActionListener{
 	JLabel passLabel;
 	JTextField passField;
 	JButton submitButton;
+	JLabel conPassLabel;
+	JTextField conPassField;
 
-	public Login() {
-		super("Login");
+	public SignUp() {
+		super("Sign Up");
 		userData = new UserSQL();
 		// 1. Create the window container
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -39,7 +41,10 @@ public class Login extends JFrame implements ActionListener{
 		passLabel = new JLabel("Password:");
 		passField = new JTextField(10);
 		
-		submitButton = new JButton("Log in");
+		conPassLabel = new JLabel("Confirm Password:");
+		conPassField = new JTextField(10);
+		
+		submitButton = new JButton("Sign Up");
 		
 		submitButton.addActionListener(this);
 
@@ -48,30 +53,17 @@ public class Login extends JFrame implements ActionListener{
 		this.add(userField);
 		this.add(passLabel);
 		this.add(passField);
+		this.add(conPassLabel);
+		this.add(conPassField);
 		this.add(submitButton);
 		// 4. Make it visible
 		this.setVisible(true);
 	}
-	
+
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == submitButton) {
 			System.out.println("You put: " + passField.getText() + " but it is: " + userData.retrieveCredentialsByUsername(userField.getText()));
 
-	        // Single DB call
-	        HashMap<String,Object> credentials = userData.retrieveCredentialsByUsername(userField.getText());
-	        
-	        if (credentials == null) {
-	            System.out.println("Does not exist");
-	        } else if (credentials.get("password").equals(passField.getText())) {
-	            System.out.println("Success, welcome " + credentials.get("username") + "your id is: " + credentials.get("id"));
-	            User user =  new User((int) credentials.get("id"), (String) credentials.get("name"), (double) credentials.get("miles"));
-	            new MileTracker(user);
-	        } else {
-	            System.out.println("Fail");
-	        }
-
-	        userField.setText("");
-	        passField.setText("");
 		}
 
 	}
