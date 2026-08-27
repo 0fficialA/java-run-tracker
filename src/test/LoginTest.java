@@ -10,7 +10,7 @@ import ui.SignUp;
 
 class LoginTest {
 
-	@Disabled
+	
 	@Test
 	void testLogin() {
 		Login login = new Login();
@@ -21,6 +21,7 @@ class LoginTest {
 		}
 	}
 
+	@Disabled
 	@Test
 	void testSignUp() {
 		SignUp signUp = new SignUp();

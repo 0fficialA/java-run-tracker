@@ -22,6 +22,8 @@ public class SignUp extends JFrame implements ActionListener{
 	JTextField userField;
 	JLabel passLabel;
 	JTextField passField;
+	JLabel nameLabel;
+	JTextField nameField;
 	JButton submitButton;
 	JLabel conPassLabel;
 	JTextField conPassField;
@@ -35,6 +37,9 @@ public class SignUp extends JFrame implements ActionListener{
 		this.setLayout(new FlowLayout());
 
 		// 2. Create the three simple components
+		nameLabel = new JLabel("Name: ");
+		nameField = new JTextField(10);
+		
 		userLabel = new JLabel("Username:");
 		userField = new JTextField(10);
 		
@@ -49,6 +54,8 @@ public class SignUp extends JFrame implements ActionListener{
 		submitButton.addActionListener(this);
 
 		// 3. Add them to the window
+		this.add(nameLabel);
+		this.add(nameField);
 		this.add(userLabel);
 		this.add(userField);
 		this.add(passLabel);
@@ -62,8 +69,12 @@ public class SignUp extends JFrame implements ActionListener{
 
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == submitButton) {
-			System.out.println("You put: " + passField.getText() + " but it is: " + userData.retrieveCredentialsByUsername(userField.getText()));
-
+			if(passField.getText().equals(conPassField.getText())) {
+				User user = new User(nameField.getText());
+				UserSQL repo = new UserSQL();
+				repo.createUserWithCredentials(user, userField.getText(), passField.getText());
+				MileTracker tracker = new MileTracker(user);
+			}
 		}
 
 	}
