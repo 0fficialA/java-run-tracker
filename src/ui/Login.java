@@ -3,30 +3,33 @@ package ui;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import dao.UserSQL;
+import controller.UserController;
 import model.User;
 
 public class Login extends JFrame implements ActionListener{
-	UserSQL userData;
 	User user;
 	JButton resetButton;
-
+	UserController controller;
 	JLabel userLabel;
 	JTextField userField;
 	JLabel passLabel;
-	JTextField passField;
+	JPasswordField passField;
 	JButton submitButton;
+	JButton toSignUp;
 
-	public Login() {
+	public Login(UserController controller) {
 		super("Login");
-		userData = new UserSQL();
+		
+		this.controller = controller;
+		
 		// 1. Create the window container
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(300, 200);
@@ -35,13 +38,15 @@ public class Login extends JFrame implements ActionListener{
 		// 2. Create the three simple components
 		userLabel = new JLabel("Username:");
 		userField = new JTextField(10);
-		
+
 		passLabel = new JLabel("Password:");
-		passField = new JTextField(10);
-		
+		passField = new JPasswordField(10);
+
 		submitButton = new JButton("Log in");
-		
+		toSignUp = new JButton("New? Sign up Now!");
+
 		submitButton.addActionListener(this);
+		toSignUp.addActionListener(this);
 
 		// 3. Add them to the window
 		this.add(userLabel);
@@ -49,30 +54,30 @@ public class Login extends JFrame implements ActionListener{
 		this.add(passLabel);
 		this.add(passField);
 		this.add(submitButton);
+		this.add(toSignUp);
 		// 4. Make it visible
 		this.setVisible(true);
 	}
-	
+
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == submitButton) {
-			System.out.println("You put: " + passField.getText() + " but it is: " + userData.retrieveCredentialsByUsername(userField.getText()));
+			User user = controller.authenticateUser(userField.getText(), passField.getText());
 
-	        // Single DB call
-	        HashMap<String,Object> credentials = userData.retrieveCredentialsByUsername(userField.getText());
-	        
-	        if (credentials == null) {
-	            System.out.println("Does not exist");
-	        } else if (credentials.get("password").equals(passField.getText())) {
-	            System.out.println("Success, welcome " + credentials.get("username") + "your id is: " + credentials.get("id"));
-	            User user =  new User((int) credentials.get("id"), (String) credentials.get("name"), (double) credentials.get("miles"));
-	            new MileTracker(user);
-	        } else {
-	            System.out.println("Fail");
-	        }
-
-	        userField.setText("");
-	        passField.setText("");
+			if (user != null) {
+				JOptionPane.showMessageDialog(this, "Welcome back, " + user.getName() + "!");
+				this.dispose(); // Close Login window
+				new MileTracker(user); // Launch MileTracker with authenticated user
+			} else {
+				JOptionPane.showMessageDialog(this, "Invalid username or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
+				passField.setText("");
+			}
 		}
-
+		else if (e.getSource() == toSignUp) {
+			this.dispose();
+            new SignUp(controller);
+		}
 	}
+
 }
+
