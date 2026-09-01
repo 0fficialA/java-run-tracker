@@ -31,7 +31,9 @@ public class UserController {
     }
 
     public boolean registerUser(String name, String username, String password) {
-        if (name.trim().isEmpty() || username.trim().isEmpty() || password.trim().isEmpty()) {
+        if (name == null || name.trim().isEmpty() ||
+                username == null || username.trim().isEmpty() ||
+                password == null || password.trim().isEmpty()) {
             return false;
         }
         User newUser = new User(name.trim());

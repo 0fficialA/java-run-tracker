@@ -1,6 +1,9 @@
 package ui;
 
-import java.awt.FlowLayout;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,70 +15,94 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import controller.UserController;
-import model.User;
 
-public class SignUp extends JFrame implements ActionListener{
-	User user;
-	UserController controller;
-	
-	JButton resetButton;
-	JLabel userLabel;
-	JTextField userField;
-	JLabel passLabel;
-	JPasswordField passField;
-	JLabel nameLabel;
-	JTextField nameField;
-	JButton submitButton;
-	JLabel conPassLabel;
-	JPasswordField conPassField;
-	JButton backToLoginButton;
+public class SignUp extends JFrame implements ActionListener {
+    private UserController controller;
 
-	public SignUp(UserController controller) {
-		super("Sign Up");
-		
-		this.controller = controller;
-		// 1. Create the window container
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(300, 200);
-		this.setLayout(new FlowLayout());
+    private JTextField nameField;
+    private JTextField userField;
+    private JPasswordField passField;
+    private JPasswordField conPassField;
+    private JButton submitButton;
+    private JButton backToLoginButton;
 
-		// 2. Create the three simple components
-		nameLabel = new JLabel("Name: ");
-		nameField = new JTextField(10);
-		
-		userLabel = new JLabel("Username:");
-		userField = new JTextField(10);
-		
-		passLabel = new JLabel("Password:");
-		passField = new JPasswordField(10);
-		
-		conPassLabel = new JLabel("Confirm Password:");
-		conPassField = new JPasswordField(10);
-		
-		submitButton = new JButton("Sign Up");
-		backToLoginButton = new JButton("Back to Login");
-		
-		submitButton.addActionListener(this);
-		backToLoginButton.addActionListener(this);
-		
+    public SignUp(UserController controller) {
+        super("Mile Tracker - Sign Up");
+        this.controller = controller;
 
-		// 3. Add them to the window
-		this.add(nameLabel);
-		this.add(nameField);
-		this.add(userLabel);
-		this.add(userField);
-		this.add(passLabel);
-		this.add(passField);
-		this.add(conPassLabel);
-		this.add(conPassField);
-		this.add(submitButton);
-		this.add(backToLoginButton);
-		// 4. Make it visible
-		this.setVisible(true);
-	}
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(380, 360);
+        this.setLocationRelativeTo(null); // Center on screen
+        this.setLayout(new GridBagLayout());
 
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == submitButton) {
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(6, 8, 6, 8); // Padding around components
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        // Header Label
+        JLabel headerLabel = new JLabel("Create Account", JLabel.CENTER);
+        headerLabel.setFont(headerLabel.getFont().deriveFont(18.0f));
+        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2;
+        this.add(headerLabel, gbc);
+
+        // Reset gridwidth for inputs
+        gbc.gridwidth = 1;
+
+        // Name
+        gbc.gridx = 0; gbc.gridy = 1;
+        this.add(new JLabel("Name:"), gbc);
+
+        nameField = new JTextField(15);
+        nameField.setPreferredSize(new Dimension(180, 30));
+        gbc.gridx = 1; gbc.gridy = 1;
+        this.add(nameField, gbc);
+
+        // Username
+        gbc.gridx = 0; gbc.gridy = 2;
+        this.add(new JLabel("Username:"), gbc);
+
+        userField = new JTextField(15);
+        userField.setPreferredSize(new Dimension(180, 30));
+        gbc.gridx = 1; gbc.gridy = 2;
+        this.add(userField, gbc);
+
+        // Password
+        gbc.gridx = 0; gbc.gridy = 3;
+        this.add(new JLabel("Password:"), gbc);
+
+        passField = new JPasswordField(15);
+        passField.setPreferredSize(new Dimension(180, 30));
+        gbc.gridx = 1; gbc.gridy = 3;
+        this.add(passField, gbc);
+
+        // Confirm Password
+        gbc.gridx = 0; gbc.gridy = 4;
+        this.add(new JLabel("Confirm Pass:"), gbc);
+
+        conPassField = new JPasswordField(15);
+        conPassField.setPreferredSize(new Dimension(180, 30));
+        gbc.gridx = 1; gbc.gridy = 4;
+        this.add(conPassField, gbc);
+
+        // Submit Button
+        submitButton = new JButton("Sign Up");
+        submitButton.setPreferredSize(new Dimension(120, 35));
+        submitButton.addActionListener(this);
+        gbc.gridx = 0; gbc.gridy = 5; gbc.gridwidth = 2;
+        this.add(submitButton, gbc);
+
+        // Back to Login Button
+        backToLoginButton = new JButton("Back to Login");
+        backToLoginButton.addActionListener(this);
+        gbc.gridx = 0; gbc.gridy = 6; gbc.gridwidth = 2;
+        this.add(backToLoginButton, gbc);
+
+        this.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == submitButton) {
             String name = nameField.getText();
             String username = userField.getText();
             String password = new String(passField.getPassword());
@@ -103,6 +130,5 @@ public class SignUp extends JFrame implements ActionListener{
             this.dispose();
             new Login(controller);
         }
-
-	}
+    }
 }
