@@ -88,7 +88,7 @@ public class Login extends JFrame implements ActionListener {
             if (user != null) {
                 JOptionPane.showMessageDialog(this, "Welcome back, " + user.getName() + "!");
                 this.dispose();
-                new MileTracker(user);
+                new MileTracker(user, controller);
             } else {
                 JOptionPane.showMessageDialog(this, "Invalid username or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
                 passField.setText("");

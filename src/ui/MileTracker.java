@@ -14,24 +14,25 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import controller.UserController;
 import dao.UserSQL;
 import model.User;
 
 public class MileTracker extends JFrame implements ActionListener {
-    private UserSQL userData;
     private User user;
 
     private JLabel label;
     private JTextField inputField;
     private JButton button;
     private JButton resetButton;
+	private UserController controller;
 
-    public MileTracker(User user) {
+    public MileTracker(User user, UserController controller) {
         super("Mile Tracker - Dashboard");
         System.out.println(user);
 
         this.user = user;
-        this.userData = new UserSQL();
+        this.controller =  controller;
 
         // 1. Configure modern window frame
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -84,7 +85,7 @@ public class MileTracker extends JFrame implements ActionListener {
         HashMap<String, Object> userInfo = repo.retrieveUserById(1);
         User user = new User((int) userInfo.get("id"), (String) userInfo.get("name"), (double) userInfo.get("miles"));
 
-        MileTracker tracker = new MileTracker(user);
+        MileTracker tracker = new MileTracker(user, new UserController());
 
         System.out.println("User Data: " + repo.retrieveUserById(user.getId()).toString());
     }
@@ -93,7 +94,7 @@ public class MileTracker extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == resetButton) {
             user.resetMiles();
-            userData.saveUser(user);
+            this.controller.saveUser(user);
             label.setText("Current Miles: " + user.getMiles());
             JOptionPane.showMessageDialog(this, "Miles total has been reset to 0.0");
             System.out.println("Successfully Reset Miles!");
@@ -110,7 +111,7 @@ public class MileTracker extends JFrame implements ActionListener {
                 double inputMiles = Double.parseDouble(text);
                 if (inputMiles >= 0) {
                     user.addMiles(inputMiles);
-                    userData.saveUser(user);
+                    this.controller.saveUser(user);
 
                     label.setText("Current Miles: " + user.getMiles());
                     inputField.setText("");

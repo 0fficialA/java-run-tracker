@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.junit.jupiter.api.Test;
 
+import controller.UserController;
 import dao.UserSQL;
 import model.User;
 import ui.Login;
@@ -18,7 +19,7 @@ public class MileTrackerTest {
     HashMap<String, Object> userInfo = repo.retrieveUserById(1);
     User user = new User( (int) userInfo.get("id"), (String) userInfo.get("name"), (double) userInfo.get("miles"));
 	
-	MileTracker tracker = new MileTracker(user);
+	MileTracker tracker = new MileTracker(user, new UserController());
 	}
 	
 	

@@ -39,4 +39,9 @@ public class UserController {
         User newUser = new User(name.trim());
         return repo.createUserWithCredentials(newUser, username.trim(), password);
     }
+    
+    public void saveUser(User user) {
+    	repo.saveUser(user);
+    }
+    
 }
